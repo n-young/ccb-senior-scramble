@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/static/js/main.4f2feedd.js",
-    "index.html": "/index.html",
-    "main.4f2feedd.js.map": "/static/js/main.4f2feedd.js.map"
+    "main.js": "/ccb-senior-scramble/static/js/main.64b52baf.js",
+    "index.html": "/ccb-senior-scramble/index.html",
+    "main.64b52baf.js.map": "/ccb-senior-scramble/static/js/main.64b52baf.js.map"
   },
   "entrypoints": [
-    "static/js/main.4f2feedd.js"
+    "static/js/main.64b52baf.js"
   ]
 }

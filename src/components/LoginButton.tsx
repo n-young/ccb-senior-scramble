@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, providers, setupUser } from "../config/firebase";
-import { Button, Container, Typography } from "@mui/material";
+import { auth, providers, setUser } from "../config/firebase";
+import { User } from "../config/types";
+import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 
-interface Props {}
-
-const LoginButton = (props: Props) => {
+const LoginButton = () => {
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
 
@@ -16,8 +15,15 @@ const LoginButton = (props: Props) => {
     signInWithPopup(auth, providers.google)
       .then(res => {
         setDisabled(false);
-        if (res.user.email && res.user.displayName)
-          setupUser(res.user.email, res.user.displayName)
+        if (!res.user.email?.endsWith("@brown.edu")) {
+          signOut(auth)
+        } else if (res.user.email && res.user.displayName) {
+          const user: User = {
+            email: res.user.email,
+            display_name: res.user.displayName,
+          }
+          setUser(user)
+        }
         navigate("/");
       })
       .catch((error) => {

@@ -9,7 +9,10 @@ const Login = () => {
       <Navbar/>
       <Container>
         <Typography>
-          Welcome to CCB Senior Scramble! Please log in.
+          Welcome to the CCB Senior Scramble website!
+        </Typography>
+        <Typography>
+          Be sure to sign up to participate in this year's senior scramble!
         </Typography>
       </Container>
     </>

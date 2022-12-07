@@ -49,17 +49,20 @@ const Home = () => {
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email) {
-      getUser(auth.currentUser!.email!).then(user => {
-        setUserVar(user);
-        setPreferences(user.preferences!);
-        setNewDisplayName(user.display_name!);
-        setNewBio(user.bio!);
-        setNewLookingFor(user.looking_for!);
-      });
+      refreshUser();
       getUsers().then(users => setAllUsers(users));
     }
   }, []);
 
+  const refreshUser = () => {
+    getUser(auth.currentUser!.email!).then(user => {
+      setUserVar(user);
+      setPreferences(user.preferences!);
+      setNewDisplayName(user.display_name!);
+      setNewBio(user.bio!);
+      setNewLookingFor(user.looking_for!);
+    });
+  }
 
   const handleUpdateUser = (e: any) => {
     e.preventDefault();
@@ -70,7 +73,8 @@ const Home = () => {
         bio: newBio,
         looking_for: newLookingFor,
       }
-      updateUser(newUser)
+      updateUser(newUser);
+      refreshUser();
     }
   }
 
@@ -94,46 +98,50 @@ const Home = () => {
     setPreferences(preferences.filter(x => x !== preference))
   }
 
-  const newPrefDisabled = (addingPreference.display_name == "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email));
+  const updateProfileDisabled = (userVar && newDisplayName === userVar.display_name && newBio === userVar.bio && newLookingFor === userVar.looking_for)
+  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email));
 
   return (
     <>
       <Navbar/>
       <Container>
-        <Box>
-          <Typography variant="h3">
+        <Box sx={{display: "flex", flexDirection: "column", mt: "20px"}}>
+          <Typography variant="h4">
             Profile
           </Typography>
-          <form onSubmit={handleUpdateUser} >
+          <form onSubmit={handleUpdateUser} style={{display: "flex", flexDirection: "column"}}>
             <FormControl>
               <FormLabel>Display Name:</FormLabel>
-              <TextField type="text" value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} />
+              <TextField sx={{width: "500px"}} type="text" value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} />
             </FormControl>
             <FormControl>
               <FormLabel>Bio:</FormLabel>
-              <Textarea minRows={2} value={newBio} onChange={(e) => setNewBio(e.target.value)} />
+              <TextField sx={{width: "500px"}} multiline minRows={5} value={newBio} onChange={(e) => setNewBio(e.target.value)} />
             </FormControl>
-            <Select value={newLookingFor} onChange={e => setNewLookingFor(e.target.value as LookingFor)}>
-              <MenuItem value={LookingFor.Love}>{LookingFor.Love}</MenuItem>
-              <MenuItem value={LookingFor.Friendship}>{LookingFor.Friendship}</MenuItem>
-              <MenuItem value={LookingFor.Both}>{LookingFor.Both}</MenuItem>
-            </Select>
-            <Button type="submit" disabled={newPrefDisabled}>
+            <FormControl>
+              <FormLabel>Looking for:</FormLabel>
+              <Select sx={{width: "500px"}} value={newLookingFor} onChange={e => setNewLookingFor(e.target.value as LookingFor)}>
+                <MenuItem value={LookingFor.Love}>{LookingFor.Love}</MenuItem>
+                <MenuItem value={LookingFor.Friendship}>{LookingFor.Friendship}</MenuItem>
+                <MenuItem value={LookingFor.Both}>{LookingFor.Both}</MenuItem>
+              </Select>
+            </FormControl>
+            <Button sx={{width: "500px", mt: "10px"}} variant="contained" type="submit" disabled={updateProfileDisabled}>
               Update Profile
             </Button>
           </form>
         </Box>
 
-        <Box>
-          <Typography variant="h3">
+        <Box sx={{mt: "50px"}}>
+          <Typography variant="h4">
             Preferences
           </Typography>
           {userVar && preferences && preferences.map((preference: Preference) => (
             <PreferenceRow key={preference.email} preference={preference} remove_func={() => handleRemovePref(preference)} />
           ))}
-          <form onSubmit={handleAddPref} >
-
+          <form onSubmit={handleAddPref} style={{display: "flex", flexDirection: "column"}}>
             <Autocomplete 
+              sx={{width: "500px"}}
               options={allUsers}
               getOptionLabel={option => option.display_name!}
               renderInput={(params) => <TextField {...params} label="Preference" />}
@@ -144,7 +152,7 @@ const Home = () => {
               control={<Checkbox value={fullSend} onChange={() => setFullSend(!fullSend)} />}
               label="Full Send?"
             />
-            <Button type="submit" disabled={newPrefDisabled}>
+            <Button sx={{width: "500px", mt: "10px"}} variant="contained" type="submit" disabled={newPrefDisabled}>
               Add Preference
             </Button>
           </form>

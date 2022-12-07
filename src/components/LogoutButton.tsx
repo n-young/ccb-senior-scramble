@@ -22,7 +22,7 @@ const LogoutButton = () => {
 
   return (
     <div>
-      <Button disabled={disabled} onClick={logout}>
+      <Button variant="outlined" disabled={disabled} onClick={logout}>
         Logout
       </Button>
     </div>

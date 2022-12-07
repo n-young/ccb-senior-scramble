@@ -40,12 +40,7 @@ const LoginButton = () => {
   };
 
   return (
-    <Button
-      startIcon={<GoogleIcon />}
-      disabled={disabled}
-      variant="contained"
-      onClick={signInWithGoogle}
-    >
+    <Button variant="outlined" disabled={disabled} onClick={signInWithGoogle}>
       Sign In
     </Button>
   );

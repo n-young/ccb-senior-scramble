@@ -69,14 +69,35 @@ export async function makeMatches() {
   const q = query(users_coll);
   const snapshot = await getDocs(q);
   const preferences: { [key: string]: Preference[] } = {};
+  const full_senders: string[] = []
   snapshot.forEach((doc) => {
     const data = doc.data();
     preferences[data.email] = data.preferences;
+    if (data.full_sending)
+      full_senders.push(data.email)
   });
-  return makeMatchesAlgorithm(preferences);
+  return makeMatchesAlgorithm(full_senders, preferences);
 }
 
-function makeMatchesAlgorithm(preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
+// function makeMatchesAlgorithm(preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
+//   const users = Object.keys(preferences);
+//   const results: { [key: string]: Preference[] } = {};
+//   // Add users that match mutually
+//   for (const user of users) {
+//     results[user] = preferences[user].filter((pref: Preference) => {
+//       const matchingPref = preferences[pref.email!].filter(innerPref => innerPref.email === user)
+//       return matchingPref.length > 0;
+//     });
+//   }
+//   // Add users that full send
+//   for (const user of users) {
+//     preferences[user].filter((pref: Preference) => pref.full_send)
+//       .forEach((pref: Preference) => results[pref.email!].push({email: user, full_send: true}))
+//   }
+//   return results;
+// }
+
+function makeMatchesAlgorithm(full_senders: string[], preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
   const users = Object.keys(preferences);
   const results: { [key: string]: Preference[] } = {};
   // Add users that match mutually
@@ -86,9 +107,9 @@ function makeMatchesAlgorithm(preferences: { [key: string]: Preference[] }): { [
       return matchingPref.length > 0;
     });
   }
-  // Add users that full send
-  for (const user of users) {
-    preferences[user].filter((pref: Preference) => pref.full_send)
+  // Add users that mutually full send
+  for (const user of full_senders) {
+    preferences[user].filter((pref: Preference) => full_senders.includes(pref.email!) && preferences[pref.email!].filter(innerPref => innerPref.email === user).length === 0)
       .forEach((pref: Preference) => results[pref.email!].push({email: user, full_send: true}))
   }
   return results;

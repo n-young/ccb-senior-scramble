@@ -27,6 +27,7 @@ const LoginButton = () => {
             bio: "",
             preferences: [],
             looking_for: LookingFor.Love,
+            full_sending: false,
             admin: false,
             matches: [],
           }

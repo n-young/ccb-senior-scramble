@@ -40,11 +40,12 @@ const Home = () => {
   const [newDisplayName, setNewDisplayName] = useState<string>("");
   const [newBio, setNewBio] = useState<string>("");
   const [newLookingFor, setNewLookingFor] = useState<LookingFor>(LookingFor.Love);
+  const [newFullSending, setNewFullSending] = useState<boolean>(false);
 
   // New preference form
   const [allUsers, setAllUsers] = useState<User[]>([])
   const [addingPreference, setAddingPreference] = useState<User>({display_name: ""});
-  const [fullSend, setFullSend] = useState<boolean>(false);
+  // const [fullSend, setFullSend] = useState<boolean>(false);
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email) {
@@ -71,6 +72,7 @@ const Home = () => {
         display_name: newDisplayName,
         bio: newBio,
         looking_for: newLookingFor,
+        full_sending: newFullSending,
       }
       updateUser(newUser);
       refreshUser();
@@ -82,7 +84,7 @@ const Home = () => {
     if (auth.currentUser?.email && addingPreference) {
       const preference = {
         email: addingPreference.email,
-        full_send: fullSend,
+        // full_send: fullSend,
       };
       addPreference(auth.currentUser?.email, preference as Preference)
         .catch(e => console.log(e));
@@ -96,8 +98,9 @@ const Home = () => {
     setPreferences(preferences.filter(x => x !== preference))
   }
 
-  const updateProfileDisabled = (userVar && newDisplayName === userVar.display_name && newBio === userVar.bio && newLookingFor === userVar.looking_for)
-  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email) || (preferences.filter(pref => pref.full_send).length > 0 && fullSend));
+  const updateProfileDisabled = (userVar && newDisplayName === userVar.display_name && newBio === userVar.bio && newLookingFor === userVar.looking_for && newFullSending === userVar.full_sending)
+  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email));
+  // || (preferences.filter(pref => pref.full_send).length > 0 && fullSend));
 
   return (
     <>
@@ -124,6 +127,10 @@ const Home = () => {
                 <MenuItem value={LookingFor.Both}>{LookingFor.Both}</MenuItem>
               </Select>
             </FormControl>
+            <FormControlLabel
+              control={<Checkbox value={newFullSending} onChange={() => setNewFullSending(!newFullSending)} />}
+              label="Full Sending?"
+            />
             <Button sx={{width: "500px", mt: "10px"}} variant="contained" type="submit" disabled={updateProfileDisabled}>
               Update Profile
             </Button>
@@ -146,10 +153,10 @@ const Home = () => {
               value={addingPreference}
               onChange={(_, val) => val && setAddingPreference(val)}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value={fullSend} onChange={() => setFullSend(!fullSend)} />}
               label="Full Send?"
-            />
+            /> */}
             <Button sx={{width: "500px", mt: "10px"}} variant="contained" type="submit" disabled={newPrefDisabled}>
               Add Preference
             </Button>

@@ -4,6 +4,7 @@ export type User = {
   bio?: string;
   preferences?: Preference[];
   looking_for?: LookingFor;
+  full_sending?: boolean;
   admin?: boolean;
   matches?: Match[];
 }

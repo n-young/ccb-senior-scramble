@@ -68,19 +68,28 @@ export async function makeMatches() {
   const users_coll = collection(db, "users");
   const q = query(users_coll);
   const snapshot = await getDocs(q);
-  const preferences: { [key: string]: any } = {};
-  snapshot.forEach((doc: any) => {
+  const preferences: { [key: string]: Preference[] } = {};
+  snapshot.forEach((doc) => {
     const data = doc.data();
     preferences[data.email] = data.preferences;
   });
   return makeMatchesAlgorithm(preferences);
 }
 
-function makeMatchesAlgorithm(preferences: { [key: string]: any }) {
+function makeMatchesAlgorithm(preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
   const users = Object.keys(preferences);
-  const results: { [key: string]: any } = {};
+  const results: { [key: string]: Preference[] } = {};
+  // Add users that match mutually
   for (const user of users) {
-    results[user] = preferences[user].filter((pref: string) => preferences[pref].contains(user));
+    results[user] = preferences[user].filter((pref: Preference) => {
+      const matchingPref = preferences[pref.email!].filter(innerPref => innerPref.email === user)
+      return matchingPref.length > 0;
+    });
+  }
+  // Add users that full send
+  for (const user of users) {
+    preferences[user].filter((pref: Preference) => pref.full_send)
+      .forEach((pref: Preference) => results[pref.email!].push({email: user, full_send: true}))
   }
   return results;
 }

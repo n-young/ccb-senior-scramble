@@ -1,87 +1,154 @@
 import { useEffect, useState } from "react";
+import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Textarea from "@mui/joy/Textarea";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import Navbar from "../components/Navbar";
-import { auth, getUser, addPreference, removePreference } from "../config/firebase";
+import { auth, addPreference, removePreference, getUser, updateUser, getUsers } from "../config/firebase";
+import { User, Preference, LookingFor } from "../config/types"
 
 type PreferenceProps = {
-  email: string;
+  preference: Preference;
   remove_func: () => void;
 }
-const Preference = ({ email, remove_func }: PreferenceProps) => {
+const PreferenceRow = ({ preference, remove_func }: PreferenceProps) => {
   return (
     <Box style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
       <Typography>
-        {email}
-      </Typography> 
+        {preference.email}
+      </Typography>
+      {preference.full_send && <Typography>(Full Send!)</Typography>}
       <Button onClick={remove_func}>X</Button>
     </Box>
   )
 }
 
 const Home = () => {
-  const [user, setUser] = useState<any>(null);
-  const [pref, setPref] = useState<string>("");
+  // Real variables
+  const [userVar, setUserVar] = useState<any>(null);
+  const [preferences, setPreferences] = useState<Preference[]>([]);
+
+  // Profile form
+  const [newDisplayName, setNewDisplayName] = useState<string>("");
+  const [newBio, setNewBio] = useState<string>("");
+  const [newLookingFor, setNewLookingFor] = useState<LookingFor>(LookingFor.Love);
+
+  // New preference form
+  const [allUsers, setAllUsers] = useState<User[]>([])
+  const [addingPreference, setAddingPreference] = useState<User>({display_name: ""});
   const [fullSend, setFullSend] = useState<boolean>(false);
 
-  const updateUser = () => {
-    if (auth.currentUser?.email)
-      getUser(auth.currentUser.email).then(res => setUser(res))
+  useEffect(() => {
+    if (auth.currentUser && auth.currentUser.email) {
+      getUser(auth.currentUser!.email!).then(user => {
+        setUserVar(user);
+        setPreferences(user.preferences!);
+        setNewDisplayName(user.display_name!);
+        setNewBio(user.bio!);
+        setNewLookingFor(user.looking_for!);
+      });
+      getUsers().then(users => setAllUsers(users));
+    }
+  }, []);
+
+
+  const handleUpdateUser = (e: any) => {
+    e.preventDefault();
+    if (auth.currentUser && auth.currentUser.email) {
+      const newUser = {
+        email: auth.currentUser.email,
+        display_name: newDisplayName,
+        bio: newBio,
+        looking_for: newLookingFor,
+      }
+      updateUser(newUser)
+    }
   }
-  useEffect(updateUser, [])
 
   const handleAddPref = (e: any) => {
-    e.preventDefault()
-    if (auth.currentUser?.email && pref) {
+    e.preventDefault();
+    if (auth.currentUser?.email && addingPreference) {
       const preference = {
-        email: pref,
+        email: addingPreference,
         full_send: fullSend,
-      }
-      addPreference(auth.currentUser?.email, preference)
-        .catch(e => console.log(e))
-      updateUser()
-      setPref("")
-      setFullSend(false)
+      };
+      addPreference(auth.currentUser?.email, preference.email)
+        .catch(e => console.log(e));
+      setPreferences([...preferences, preference.email])
+      setAddingPreference({display_name: ""});
+      setFullSend(false);
     }
   }
 
-  const handleRemovePref = (pref_email: string) => {
-    const preference = {
-      email: pref,
-      full_send: fullSend,
-    }
-    removePreference(auth.currentUser?.email!, preference)
-    updateUser()
+  const handleRemovePref = (preference: Preference) => {
+    removePreference(auth.currentUser?.email!, preference);
+    setPreferences(preferences.filter(x => x !== preference))
   }
+
+  const newPrefDisabled = (addingPreference.display_name == "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email));
 
   return (
     <>
       <Navbar/>
       <Container>
-        <Typography>
-          Welcome to CCB Senior Scramble! See your preferences below.
-        </Typography>
-        {user && user.preferences && user.preferences.map((pref_email: string) => (
-          <Preference email={pref_email} remove_func={() => handleRemovePref(pref_email)} />
-        ))}
-        <form onSubmit={handleUpdateUser} >
-          {/* TODO: User details form */}
-        </form>
-        <form onSubmit={handleAddPref} >
-          <TextField type="text" label="Preference Email:" onChange={(e) => setPref(e.target.value)} />
+        <Box>
+          <Typography variant="h3">
+            Profile
+          </Typography>
+          <form onSubmit={handleUpdateUser} >
+            <FormControl>
+              <FormLabel>Display Name:</FormLabel>
+              <TextField type="text" value={newDisplayName} onChange={(e) => setNewDisplayName(e.target.value)} />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Bio:</FormLabel>
+              <Textarea minRows={2} value={newBio} onChange={(e) => setNewBio(e.target.value)} />
+            </FormControl>
+            <Select value={newLookingFor} onChange={e => setNewLookingFor(e.target.value as LookingFor)}>
+              <MenuItem value={LookingFor.Love}>{LookingFor.Love}</MenuItem>
+              <MenuItem value={LookingFor.Friendship}>{LookingFor.Friendship}</MenuItem>
+              <MenuItem value={LookingFor.Both}>{LookingFor.Both}</MenuItem>
+            </Select>
+            <Button type="submit" disabled={newPrefDisabled}>
+              Update Profile
+            </Button>
+          </form>
+        </Box>
+
+        <Box>
+          <Typography variant="h3">
+            Preferences
+          </Typography>
+          {userVar && preferences && preferences.map((preference: Preference) => (
+            <PreferenceRow key={preference.email} preference={preference} remove_func={() => handleRemovePref(preference)} />
+          ))}
+          <form onSubmit={handleAddPref} >
+
+            <Autocomplete 
+              options={allUsers}
+              getOptionLabel={option => option.display_name!}
+              renderInput={(params) => <TextField {...params} label="Preference" />}
+              value={addingPreference}
+              onChange={(_, val) => val && setAddingPreference(val)}
+            />
             <FormControlLabel
               control={<Checkbox value={fullSend} onChange={() => setFullSend(!fullSend)} />}
               label="Full Send?"
             />
-          <Button type="submit">
-            Add Preference
-          </Button>
-        </form>
+            <Button type="submit" disabled={newPrefDisabled}>
+              Add Preference
+            </Button>
+          </form>
+        </Box>
       </Container>
     </>
   );

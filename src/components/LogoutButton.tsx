@@ -4,18 +4,15 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
 
-interface Props {
-  navigateTo?: string;
-}
-
-const LogoutButton = ({ navigateTo = "/login" }: Props) => {
+// Button to log out.
+const LogoutButton = () => {
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   const logout = () => {
     setDisabled(true);
     signOut(auth)
       .then(() => {
-        navigate(navigateTo);
+        navigate("/login");
       })
       .catch((error) => {
         console.error(error);

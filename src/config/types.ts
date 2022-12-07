@@ -5,6 +5,7 @@ export type User = {
   preferences?: Preference[];
   looking_for?: LookingFor;
   admin?: boolean;
+  matches?: Match[];
 }
 
 export type Preference = {
@@ -12,10 +13,17 @@ export type Preference = {
   full_send?: boolean;
 }
 
+export type Match = {
+  email?: string;
+  display_name?: string;
+  bio?: string;
+  looking_for?: LookingFor;
+}
+
 export enum LookingFor {
-  Love,
-  Friendship,
-  Both,
+  Love = "Love",
+  Friendship = "Friendship",
+  Both = "Both Love and Friendship",
 }
 
 export enum Flag {

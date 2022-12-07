@@ -3,6 +3,7 @@ import { Flag } from "./types";
 import Home from "../screens/Home"
 import Login from "../screens/Login"
 import Admin from "../screens/Admin"
+import Matches from "../screens/Matches"
 
 interface RouteType {
   path: string;
@@ -22,7 +23,7 @@ export const routes: RouteType[] = [
   },
   {
     path: "/matches",
-    component: Home,
+    component: Matches,
     guards: [loginGuard, canSeeMatchesGuard],
   },
   {
@@ -33,37 +34,37 @@ export const routes: RouteType[] = [
 ];
 
 export async function loginGuard(): Promise<boolean> {
-  return !!auth.currentUser
+  return !!auth.currentUser;
 }
 
 export async function adminGuard(): Promise<boolean> {
-  if (!auth.currentUser) {
-    return false
+  if (!auth.currentUser || !auth.currentUser.email) {
+    return false;
   }
-  const user = await getUser(auth.currentUser?.email!)
-  return !!user.admin;
+  const user = await getUser(auth.currentUser.email!);
+  return user.admin || false;
 }
 
 export async function canSignupFlagGuard(): Promise<boolean> {
   if (!auth.currentUser) {
-    return false
+    return false;
   }
-  const flag = await getFlag(Flag.CanSignup)
+  const flag = await getFlag(Flag.CanSignup);
   return flag;
 }
 
 export async function canChangePreferencesGuard(): Promise<boolean> {
   if (!auth.currentUser) {
-    return false
+    return false;
   }
-  const flag = await getFlag(Flag.CanChangePreferences)
+  const flag = await getFlag(Flag.CanChangePreferences);
   return flag;
 }
 
 export async function canSeeMatchesGuard(): Promise<boolean> {
   if (!auth.currentUser) {
-    return false
+    return false;
   }
-  const flag = await getFlag(Flag.CanSeeMatches)
+  const flag = await getFlag(Flag.CanSeeMatches);
   return flag;
 }

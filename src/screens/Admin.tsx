@@ -15,25 +15,25 @@ const Admin = () => {
   const [canSeeMatches, setCanSeeMatches] = useState<boolean>(false);
 
   useEffect(() => {
-    getFlag(Flag.CanSignup).then(res => setCanSignup(res))
-    getFlag(Flag.CanChangePreferences).then(res => setCanChangePreferences(res))
-    getFlag(Flag.CanSeeMatches).then(res => setCanSeeMatches(res))
-  }, [canSignup])
+    getFlag(Flag.CanSignup).then(res => setCanSignup(res));
+    getFlag(Flag.CanChangePreferences).then(res => setCanChangePreferences(res));
+    getFlag(Flag.CanSeeMatches).then(res => setCanSeeMatches(res));
+  }, []);
 
   const handleToggleCanSignup = (checked: boolean) => {
-    setFlag(Flag.CanSignup, checked)
-    setCanSignup(checked)
-  }
+    setFlag(Flag.CanSignup, checked);
+    setCanSignup(checked);
+  };
 
   const handleToggleCanChangePreferences = (checked: boolean) => {
-    setFlag(Flag.CanChangePreferences, checked)
-    setCanChangePreferences(checked)
-  }
+    setFlag(Flag.CanChangePreferences, checked);
+    setCanChangePreferences(checked);
+  };
 
   const handleToggleCanSeeMatches = (checked: boolean) => {
-    setFlag(Flag.CanSeeMatches, checked)
-    setCanSeeMatches(checked)
-  }
+    setFlag(Flag.CanSeeMatches, checked);
+    setCanSeeMatches(checked);
+  };
 
   return (
     <>

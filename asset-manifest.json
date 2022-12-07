@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/ccb-senior-scramble/static/js/main.64b52baf.js",
+    "main.js": "/ccb-senior-scramble/static/js/main.05eb0731.js",
     "index.html": "/ccb-senior-scramble/index.html",
-    "main.64b52baf.js.map": "/ccb-senior-scramble/static/js/main.64b52baf.js.map"
+    "main.05eb0731.js.map": "/ccb-senior-scramble/static/js/main.05eb0731.js.map"
   },
   "entrypoints": [
-    "static/js/main.64b52baf.js"
+    "static/js/main.05eb0731.js"
   ]
 }

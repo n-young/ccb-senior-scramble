@@ -7,7 +7,6 @@ import Container from "@mui/material/Container";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
-import Textarea from "@mui/joy/Textarea";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
@@ -50,7 +49,7 @@ const Home = () => {
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email) {
       refreshUser();
-      getUsers().then(users => setAllUsers(users));
+      getUsers().then(users => setAllUsers(users.filter(user => user.email != auth.currentUser!.email!)));
     }
   }, []);
 
@@ -82,14 +81,13 @@ const Home = () => {
     e.preventDefault();
     if (auth.currentUser?.email && addingPreference) {
       const preference = {
-        email: addingPreference,
+        email: addingPreference.email,
         full_send: fullSend,
       };
-      addPreference(auth.currentUser?.email, preference.email)
+      addPreference(auth.currentUser?.email, preference as Preference)
         .catch(e => console.log(e));
-      setPreferences([...preferences, preference.email])
+      setPreferences([...preferences, preference])
       setAddingPreference({display_name: ""});
-      setFullSend(false);
     }
   }
 
@@ -99,7 +97,7 @@ const Home = () => {
   }
 
   const updateProfileDisabled = (userVar && newDisplayName === userVar.display_name && newBio === userVar.bio && newLookingFor === userVar.looking_for)
-  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email));
+  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.map(p => p.email).includes(addingPreference.email) || (preferences.filter(pref => pref.full_send).length > 0 && fullSend));
 
   return (
     <>

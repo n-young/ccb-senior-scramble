@@ -34,7 +34,7 @@ export const routes: RouteType[] = [
     guards: [loginGuard, registeredGuard, canSeeMatchesGuard],
   },
   {
-    path: "/admin",
+    path: "/adminsupersecretcannotfindthishahahahahhahah",
     component: Admin,
     guards: [loginGuard, adminGuard],
   },

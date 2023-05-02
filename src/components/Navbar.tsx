@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const isProfilePath = location.pathname === "/profile";
   const isMatchesPath = location.pathname === "/matches";
-  const isAdminPath = location.pathname === "/admin";
+  const isAdminPath = location.pathname === "/adminsupersecretcannotfindthishahahahahhahah";
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email) {
@@ -43,7 +43,7 @@ export default function Navbar() {
           (<>
             {auth.currentUser && <Link to="/profile" style={{color: isProfilePath ? palette.ACCENT : palette.BLACK, textDecoration: "none"}}>Profile</Link>}
             {auth.currentUser && canSeeMatches && <Link to="/matches" style={{color: isMatchesPath ? palette.ACCENT : palette.BLACK, textDecoration: "none"}}>Matches</Link>}
-            {auth.currentUser && isAdmin && <Link to="/admin" style={{color: isAdminPath ? palette.ACCENT : palette.BLACK, textDecoration: "none"}}>Admin</Link>}
+            {auth.currentUser && isAdmin && <Link to="/adminsupersecretcannotfindthishahahahahhahah" style={{color: isAdminPath ? palette.ACCENT : palette.BLACK, textDecoration: "none"}}>Admin</Link>}
           </>)
         }
         {auth.currentUser ? <LogoutButton/> : <LoginButton/>}

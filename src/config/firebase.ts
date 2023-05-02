@@ -76,7 +76,9 @@ export async function makeMatches() {
     if (data.full_sending)
       full_senders.push(data.email)
   });
-  return makeMatchesAlgorithm(full_senders, preferences);
+  const res = makeMatchesAlgorithm(full_senders, preferences);
+  console.log(res)
+  return res;
 }
 
 function makeMatchesAlgorithm(full_senders: string[], preferences: { [key: string]: string[] }): { [key: string]: string[] } {

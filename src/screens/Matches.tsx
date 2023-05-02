@@ -8,11 +8,15 @@ import palette from "../config/colors"
 import { User } from "../config/types";
 
 const Matches = () => {
+  const [done, setDone] = useState<boolean>(false);
   const [matches, setMatches] = useState<string[]>([])
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email)
-      getUser(auth.currentUser.email).then(user => setMatches(user.matches!));
+      getUser(auth.currentUser.email).then(user => {
+        setMatches(user.matches!)
+        setDone(true);
+      });
   }, [])
 
   return (
@@ -25,11 +29,14 @@ const Matches = () => {
           </Typography>
         </Box>
       </Container>
-      <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: {md: "100px 200px", xs: "10px"}, gap: "25px"}}>
+      {done && <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: {md: "100px 200px", xs: "10px"}, gap: "25px"}}>
         {matches.map((match, idx) => (
             <Match key={idx} match={match} />
         ))}
-      </Box>
+        {!matches && <Typography variant="body1">
+          Oh no! You have no matches 😔😔😔😔
+        </Typography>}
+      </Box>}
     </>
   );
 };

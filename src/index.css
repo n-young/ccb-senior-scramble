@@ -2,3 +2,15 @@ body, h1, h2, h3, h4, h5, p, a {
   margin: 0;
   font-family: 'Inter', sans-serif !important;
 }
+
+html, body, #root {
+  height: 100vh;
+  width: 100vw;
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* Fixes iOS Safari */
+  html, body, #root {
+    height: -webkit-fill-available;
+  }
+}

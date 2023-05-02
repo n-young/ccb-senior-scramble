@@ -10,22 +10,23 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
-import { auth, addPreference, removePreference, getUser, updateUser } from "../config/firebase";
-import { User } from "../config/types"
+import { auth, addPreference, removePreference, getUser, updateUser, getFlag } from "../config/firebase";
+import { User, Flag } from "../config/types"
 import { participants } from "../config/participants";
 import palette from "../config/colors";
 
 type PreferenceProps = {
   preference: string;
+  canChangePreferences: boolean;
   remove_func: () => void;
 }
-const PreferenceRow = ({ preference, remove_func }: PreferenceProps) => {
+const PreferenceRow = ({ preference, canChangePreferences, remove_func }: PreferenceProps) => {
   return (
     <Box style={{ display: "flex", width: "400px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "5px 5px 5px 20px", border: `2px solid ${palette.ACCENT}`, borderRadius: "30px" }}>
       <Typography>
         {preference}
       </Typography>
-      <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "100px", padding: "10px 20px", color: palette.WHITE, }} onClick={remove_func}>Remove</Button>
+      {canChangePreferences && <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "100px", padding: "10px 20px", color: palette.WHITE, }} onClick={remove_func}>Remove</Button>}
     </Box>
   )
 }
@@ -34,6 +35,8 @@ const Profile = () => {
   // Real variables
   const [userVar, setUserVar] = useState<any>(null);
   const [preferences, setPreferences] = useState<string[]>([]);
+
+  const [canChangePreferences, setCanChangePreferences] = useState<boolean>(false);
 
   // Profile form
   const [newDisplayName, setNewDisplayName] = useState<string>("");
@@ -52,6 +55,13 @@ const Profile = () => {
     }
   }, []);
 
+  // See if we can change prefs
+  useEffect(() => {
+    getFlag(Flag.CanChangePreferences).then(res => {
+      setCanChangePreferences(res);
+    })
+  }, []);
+
   // Grab the user from the database
   const refreshUser = () => {
     getUser(auth.currentUser!.email!).then(user => {
@@ -61,6 +71,7 @@ const Profile = () => {
       setNewPronouns(user.pronouns!);
       setNewBio(user.bio!);
       setNewHandle(user.handle!)
+      setNewFullSending(user.full_sending!)
     });
   }
 
@@ -100,7 +111,7 @@ const Profile = () => {
   }
 
   // Helpers for what to render
-  const updateProfileDisabled = (userVar && newDisplayName === userVar.display_name && newBio === userVar.bio && newFullSending === userVar.full_sending)
+  const updateProfileDisabled = (userVar && newPronouns === userVar.pronouns && newBio === userVar.bio && newHandle === userVar.handle && newFullSending === userVar.full_sending)
   const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.includes(addingPreference.email!));
 
   return (
@@ -130,7 +141,7 @@ const Profile = () => {
               <TextField sx={{ width: "500px" }} value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value={newFullSending} onChange={() => setNewFullSending(!newFullSending)} />}
+              control={<Checkbox checked={newFullSending} onChange={() => setNewFullSending((prev) => !prev)} />}
               label="Full Sending?"
             />
             <Button style={{ backgroundColor: palette.ACCENT }} sx={{ width: "500px", mt: "10px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>
@@ -143,11 +154,10 @@ const Profile = () => {
           <Typography variant="h3" style={{ color: palette.ACCENT }}>
             Preferences
           </Typography>
-          <br/>
-          <form onSubmit={handleAddPref} style={{ display: "flex", flexDirection: "column" }}>
+          {canChangePreferences && <form onSubmit={handleAddPref} style={{ display: "flex", flexDirection: "column", margin: "50px" }}>
             <Autocomplete
               sx={{ width: "500px" }}
-              options={participants}
+              options={participants.filter(p => p.email !== userVar.email && !preferences.includes(p.email!))}
               getOptionLabel={option => option.display_name!}
               renderInput={(params) => <TextField {...params} label="Preference" />}
               value={addingPreference}
@@ -156,11 +166,9 @@ const Profile = () => {
             <Button sx={{ width: "500px", mt: "10px" }} variant="contained" type="submit" disabled={newPrefDisabled}>
               Add Preference
             </Button>
-          </form>
-          <br/>
-          <br/>
+          </form>}
           {userVar && preferences && preferences.map((preference: string) => (
-            <PreferenceRow key={preference} preference={preference} remove_func={() => handleRemovePref(preference)} />
+            <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
         </Box>
       </Container>

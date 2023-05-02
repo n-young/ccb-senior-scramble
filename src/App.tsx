@@ -23,23 +23,21 @@ function App() {
     );
 
   return (
-    <div>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <Guard guards={route.guards}>
-                  <route.component />
-                </Guard>
-              }
-            />
-          ))}
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <Routes>
+        {routes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <Guard guards={route.guards}>
+                <route.component />
+              </Guard>
+            }
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -18,12 +18,12 @@ const Home = () => {
   return (
     <>
       <Navbar/>
-      <Box sx={{ display: "flex", flexDirection: { md: "row", xs: "column" }, justifyContent: "center" }}>
-        <Box sx={{ padding: "40px", backgroundColor: palette.ACCENT, color: palette.WHITE }}>
+      <Box sx={{ display: "flex", height: "100%", flexDirection: { md: "row", xs: "column" }, alignItems: "stretch" }}>
+        <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", backgroundColor: palette.ACCENT, color: palette.WHITE }}>
           <Typography variant="h3">
-            Seni<span style={{fontSize: "20px"}}>♥</span>r Scramble
+            Seni<span style={{ fontSize: "66.6%" }}>♥</span>r Scramble
           </Typography>
-          <Typography variant="h4">
+          <Typography variant="h4" sx={{ fontStyle: "italic" }}>
             Full Send Edition
           </Typography>
           <Typography>

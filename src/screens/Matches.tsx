@@ -33,7 +33,7 @@ const Matches = () => {
         {matches.map((match, idx) => (
             <Match key={idx} match={match} />
         ))}
-        {!matches && <Typography variant="body1">
+        {!matches.length && <Typography variant="body1">
           Oh no! You have no matches 😔😔😔😔
         </Typography>}
       </Box>}

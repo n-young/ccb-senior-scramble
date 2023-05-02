@@ -1,6 +1,6 @@
 const BLACK = "#3D3D3D"
 const WHITE = "#FFFFFF"
-const ACCENT = "#C85B6E"
+const ACCENT = "#EC7979"
 
 const palette = {
   BLACK,

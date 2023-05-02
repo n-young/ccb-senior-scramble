@@ -141,7 +141,7 @@ const Profile = () => {
               <TextField sx={{ width: "500px" }} value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox checked={newFullSending} onChange={() => setNewFullSending((prev) => !prev)} />}
+              control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
               label="Full Sending?"
             />
             <Button style={{ backgroundColor: palette.ACCENT }} sx={{ width: "500px", mt: "10px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>

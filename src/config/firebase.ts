@@ -77,7 +77,15 @@ export async function makeMatches() {
       full_senders.push(data.email)
   });
   const res = makeMatchesAlgorithm(full_senders, preferences);
-  console.log(res)
+
+  const rkeys = Object.keys(res);
+  for (const r of rkeys) {
+    const new_user = {
+      email: r,
+      matches: res[r],
+    }
+    await updateUser(new_user);
+  }
   return res;
 }
 

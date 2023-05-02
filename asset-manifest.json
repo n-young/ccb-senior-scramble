@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/ccb-senior-scramble/static/css/main.411bd4b6.css",
-    "main.js": "/ccb-senior-scramble/static/js/main.17c27d10.js",
+    "main.css": "/ccb-senior-scramble/static/css/main.c74e5d10.css",
+    "main.js": "/ccb-senior-scramble/static/js/main.97e7903b.js",
     "index.html": "/ccb-senior-scramble/index.html",
-    "main.411bd4b6.css.map": "/ccb-senior-scramble/static/css/main.411bd4b6.css.map",
-    "main.17c27d10.js.map": "/ccb-senior-scramble/static/js/main.17c27d10.js.map"
+    "main.c74e5d10.css.map": "/ccb-senior-scramble/static/css/main.c74e5d10.css.map",
+    "main.97e7903b.js.map": "/ccb-senior-scramble/static/js/main.97e7903b.js.map"
   },
   "entrypoints": [
-    "static/css/main.411bd4b6.css",
-    "static/js/main.17c27d10.js"
+    "static/css/main.c74e5d10.css",
+    "static/js/main.97e7903b.js"
   ]
 }

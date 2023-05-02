@@ -1,11 +1,10 @@
-const BLACK = "#292929"
-const WHITE = "#FCFCFC"
-// const ACCENT = "#EF2D56"
-// const ACCENT = "#F46197"
-const ACCENT = "#EE4266"
+const BLACK = "#3D3D3D"
+const WHITE = "#FFFFFF"
+const ACCENT = "#C85B6E"
 
-export default {
+const palette = {
   BLACK,
   WHITE,
   ACCENT,
-}
+};
+export default palette;

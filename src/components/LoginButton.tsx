@@ -2,9 +2,10 @@ import { useState } from "react";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, providers, setUser } from "../config/firebase";
-import { LookingFor, User } from "../config/types";
+import { User } from "../config/types";
 import { Button } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
+import { participants } from "../config/participants";
+import palette from "../config/colors";
 
 // Button to log in using google.
 const LoginButton = () => {
@@ -17,31 +18,34 @@ const LoginButton = () => {
     signInWithPopup(auth, providers.google)
       .then(res => {
         setDisabled(false);
-        // Check if the user has a Brown email.
-        if (!res.user.email?.endsWith("@brown.edu")) {
+        // Check if the user has a Brown email and is a registered participant
+        if (!res.user.email?.endsWith("@brown.edu") || !participants.map(p => p.email).includes(res.user.email)) {
           signOut(auth);
         } else if (res.user.metadata.creationTime === res.user.metadata.lastSignInTime) {
           const user: User = {
-            email: res.user.email,
-            display_name: res.user.displayName || "",
+            email: res.user.email!,
+            display_name: participants.find(p => p.email == res.user.email)?.display_name || res.user.displayName || "",
+            pronouns: "",
             bio: "",
+            handle: "",
+            pic: res.user.photoURL || "",
             preferences: [],
-            looking_for: LookingFor.Love,
             full_sending: false,
             admin: false,
             matches: [],
           }
           setUser(user);
         }
-        navigate("/");
+        navigate("/profile");
       })
       .catch((error) => {
         setDisabled(false);
+        navigate("/error");
       });
   };
 
   return (
-    <Button variant="outlined" disabled={disabled} onClick={signInWithGoogle}>
+    <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "10000px"}} variant="contained" disabled={disabled} onClick={signInWithGoogle}>
       Sign In
     </Button>
   );

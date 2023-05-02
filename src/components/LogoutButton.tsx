@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
+import palette from "../config/colors";
 
 // Button to log out.
 const LogoutButton = () => {
@@ -12,7 +13,7 @@ const LogoutButton = () => {
     setDisabled(true);
     signOut(auth)
       .then(() => {
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         console.error(error);
@@ -22,7 +23,7 @@ const LogoutButton = () => {
 
   return (
     <div>
-      <Button variant="outlined" disabled={disabled} onClick={logout}>
+      <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "10000px"}} variant="contained" disabled={disabled} onClick={logout}>
         Logout
       </Button>
     </div>

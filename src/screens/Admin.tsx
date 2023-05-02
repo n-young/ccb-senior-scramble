@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
 import { makeMatches, getFlag, setFlag } from "../config/firebase";
 import { Flag } from "../config/types";
+import palette from "../config/colors";
 
 const Admin = () => {
   const [canSignup, setCanSignup] = useState<boolean>(false);
@@ -42,7 +43,7 @@ const Admin = () => {
       <Navbar/>
       <Container>
         <Box sx={{display: "flex", flexDirection: "column", mt: "20px"}}>
-          <Typography variant="h4">
+          <Typography variant="h3" style={{ color: palette.ACCENT }}>
             Admin Panel
           </Typography>
           <FormControl>

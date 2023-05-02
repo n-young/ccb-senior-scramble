@@ -14,10 +14,10 @@ const Guard = ({ guards, children }: GuardProps) => {
   useEffect(() => {
     Promise.all(guards.map(f => f())).then(res => {
       if (!res.every(x => x)) {
-        navigate("/login");
+        navigate("/error");
       }
     });
-  }, [location]);
+  }, [location, guards, navigate]);
 
   return <>{children}</>;
 };

@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebase.config";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { doc, getFirestore, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove, query, collection, getDocs } from "firebase/firestore"; 
-import { User, Preference, Flag } from "./types"
+import { User, Flag } from "./types"
 
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
@@ -46,14 +46,14 @@ export async function getUsers(): Promise<User[]> {
 // Preferences
 // ========================================================
 
-export async function addPreference(email: string, preference: Preference) {
+export async function addPreference(email: string, preference: string) {
   const user_ref = doc(db, "users", email);
   await updateDoc(user_ref, {
     preferences: arrayUnion(preference)
   });
 }
 
-export async function removePreference(email: string, preference: Preference) {
+export async function removePreference(email: string, preference: string) {
   const user_ref = doc(db, "users", email);
   await updateDoc(user_ref, {
     preferences: arrayRemove(preference)
@@ -68,7 +68,7 @@ export async function makeMatches() {
   const users_coll = collection(db, "users");
   const q = query(users_coll);
   const snapshot = await getDocs(q);
-  const preferences: { [key: string]: Preference[] } = {};
+  const preferences: { [key: string]: string[] } = {};
   const full_senders: string[] = []
   snapshot.forEach((doc) => {
     const data = doc.data();
@@ -79,38 +79,20 @@ export async function makeMatches() {
   return makeMatchesAlgorithm(full_senders, preferences);
 }
 
-// function makeMatchesAlgorithm(preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
-//   const users = Object.keys(preferences);
-//   const results: { [key: string]: Preference[] } = {};
-//   // Add users that match mutually
-//   for (const user of users) {
-//     results[user] = preferences[user].filter((pref: Preference) => {
-//       const matchingPref = preferences[pref.email!].filter(innerPref => innerPref.email === user)
-//       return matchingPref.length > 0;
-//     });
-//   }
-//   // Add users that full send
-//   for (const user of users) {
-//     preferences[user].filter((pref: Preference) => pref.full_send)
-//       .forEach((pref: Preference) => results[pref.email!].push({email: user, full_send: true}))
-//   }
-//   return results;
-// }
-
-function makeMatchesAlgorithm(full_senders: string[], preferences: { [key: string]: Preference[] }): { [key: string]: Preference[] } {
+function makeMatchesAlgorithm(full_senders: string[], preferences: { [key: string]: string[] }): { [key: string]: string[] } {
   const users = Object.keys(preferences);
-  const results: { [key: string]: Preference[] } = {};
+  const results: { [key: string]: string[] } = {};
   // Add users that match mutually
   for (const user of users) {
-    results[user] = preferences[user].filter((pref: Preference) => {
-      const matchingPref = preferences[pref.email!].filter(innerPref => innerPref.email === user)
+    results[user] = preferences[user].filter((pref: string) => {
+      const matchingPref = preferences[pref].filter(p => p === user)
       return matchingPref.length > 0;
     });
   }
   // Add users that mutually full send
   for (const user of full_senders) {
-    preferences[user].filter((pref: Preference) => full_senders.includes(pref.email!) && preferences[pref.email!].filter(innerPref => innerPref.email === user).length === 0)
-      .forEach((pref: Preference) => results[pref.email!].push({email: user, full_send: true}))
+    preferences[user].filter((pref: string) => full_senders.includes(pref) && preferences[pref].filter(p => p === user).length === 0)
+      .forEach((pref: string) => results[pref!].push(user))
   }
   return results;
 }

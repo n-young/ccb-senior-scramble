@@ -1,9 +1,4 @@
-
-body {
+body, h1, h2, h3, h4, h5, p, a {
   margin: 0;
-  font-family: 'Ubuntu', sans-serif !important;
-}
-
-code {
-  font-family: monospace;
+  font-family: 'Inter', sans-serif !important;
 }

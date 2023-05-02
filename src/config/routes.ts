@@ -1,9 +1,11 @@
 import { auth, getUser, getFlag } from "./firebase";
 import { Flag } from "./types";
+import Profile from "../screens/Profile"
+import Error from "../screens/Error"
 import Home from "../screens/Home"
-import Login from "../screens/Login"
 import Admin from "../screens/Admin"
 import Matches from "../screens/Matches"
+import { participants } from "./participants";
 
 interface RouteType {
   path: string;
@@ -14,17 +16,22 @@ export const routes: RouteType[] = [
   {
     path: "",
     component: Home,
-    guards: [loginGuard],
+    guards: [],
   },
   {
-    path: "/login",
-    component: Login,
+    path: "/error",
+    component: Error,
     guards: [],
+  },
+  {
+    path: "/profile",
+    component: Profile,
+    guards: [loginGuard, registeredGuard],
   },
   {
     path: "/matches",
     component: Matches,
-    guards: [loginGuard, canSeeMatchesGuard],
+    guards: [loginGuard, registeredGuard, canSeeMatchesGuard],
   },
   {
     path: "/admin",
@@ -35,6 +42,10 @@ export const routes: RouteType[] = [
 
 export async function loginGuard(): Promise<boolean> {
   return !!auth.currentUser;
+}
+
+export async function registeredGuard(): Promise<boolean> {
+  return !!auth.currentUser?.email && participants.map(p => p.email).includes(auth.currentUser?.email);
 }
 
 export async function adminGuard(): Promise<boolean> {

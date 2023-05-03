@@ -45,7 +45,7 @@ const LoginButton = () => {
   };
 
   return (
-    <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "10000px"}} variant="contained" disabled={disabled} onClick={signInWithGoogle}>
+    <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "8px", boxShadow: "none"}} variant="contained" disabled={disabled} onClick={signInWithGoogle}>
       Sign In
     </Button>
   );

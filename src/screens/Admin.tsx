@@ -43,20 +43,15 @@ const Admin = () => {
       <Navbar/>
       <Container>
         <Box sx={{display: "flex", flexDirection: "column", mt: "20px"}}>
-          <Typography variant="h3" style={{ color: palette.ACCENT }}>
+          <Typography variant="h3">
             Admin Panel
           </Typography>
-          <FormControl>
-            <FormLabel>
-              Click the button below to make matches!
-            </FormLabel>
-            <Button sx={{width: "500px"}} variant="contained" onClick={makeMatches}>
-              Make Matches
-            </Button>
-          </FormControl>
+          <Typography variant="overline">
+            You better know what you're doing!
+          </Typography>
           <FormControlLabel
             control={<Checkbox checked={canSignup} onChange={e => handleToggleCanSignup(e.target.checked)} />}
-            label="Can sign up"
+            label="Can sign up (does nothing)"
           />
           <FormControlLabel
             control={<Checkbox checked={canChangePreferences} onChange={e => handleToggleCanChangePreferences(e.target.checked)} />}
@@ -66,6 +61,9 @@ const Admin = () => {
             control={<Checkbox checked={canSeeMatches} onChange={e => handleToggleCanSeeMatches(e.target.checked)} />}
             label="Can see matches"
           />
+          <Button variant="outlined" onClick={makeMatches}>
+            Make Matches
+          </Button>
         </Box>
       </Container>
     </>

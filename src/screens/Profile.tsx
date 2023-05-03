@@ -22,11 +22,11 @@ type PreferenceProps = {
 }
 const PreferenceRow = ({ preference, canChangePreferences, remove_func }: PreferenceProps) => {
   return (
-    <Box style={{ display: "flex", width: "400px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "5px 5px 5px 20px", border: `2px solid ${palette.ACCENT}`, borderRadius: "30px" }}>
+    <Box style={{ display: "flex", width: "400px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "5px 5px 5px 20px", borderRadius: "8px", backgroundColor: "rgba(1, 1, 1, 0.1)" }}>
       <Typography>
-        {preference}
+        {participants.find(p => p.email == preference)?.display_name}
       </Typography>
-      {canChangePreferences && <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "100px", padding: "10px 20px", color: palette.WHITE, }} onClick={remove_func}>Remove</Button>}
+      {canChangePreferences && <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "8px", padding: "10px 20px", color: palette.WHITE, }} onClick={remove_func}>Remove</Button>}
     </Box>
   )
 }
@@ -117,12 +117,26 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <Container sx={{ display: "flex", flexDirection: {md: "row", xs: "column"}, alignItems: "flex-start", gap: "50px" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "50px 0" }}>
-          <Typography variant="h3" style={{ color: palette.ACCENT }}>
+      <Container>
+        <Box sx={{ display: "flex", flexDirection: "column", mt: "40px" }}>
+          <Typography variant="h3">
             Profile
           </Typography>
+          <Typography variant="overline">
+            Let's get you looking pretty!
+          </Typography>
+        </Box>
+      </Container>
+
+      <Container sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "500px" }}>
           {userVar && <img style={{ width: "200px", borderRadius: "1000px", margin: "20px" }} src={userVar.pic} referrerPolicy="no-referrer" />}
+          <Box sx={{width: "400px", textAlign: "center"}}>
+            <Typography variant="overline">
+              Change your profile picture by changing your Google Account picture
+            </Typography>
+          </Box>
+          <br/>
           <form onSubmit={handleUpdateUser} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <FormControl>
               <FormLabel>Display Name:</FormLabel>
@@ -136,24 +150,36 @@ const Profile = () => {
               <FormLabel>Bio:</FormLabel>
               <TextField sx={{ width: "500px" }} multiline minRows={5} value={newBio} onChange={(e) => setNewBio(e.target.value)} />
             </FormControl>
-            <FormControl>
-              <FormLabel>Social Media Handle:</FormLabel>
-              <TextField sx={{ width: "500px" }} value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+            <FormLabel>Social Media:</FormLabel>
+            <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
+              <FormLabel>Instagram:</FormLabel>
+              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
             </FormControl>
-            <FormControlLabel
-              control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
-              label="Full Sending?"
-            />
-            <Button style={{ backgroundColor: palette.ACCENT }} sx={{ width: "500px", mt: "10px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>
-              Update Profile
-            </Button>
+            <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
+              <FormLabel>Snapchat:</FormLabel>
+              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+            </FormControl>
+            <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
+              <FormLabel>Facebook:</FormLabel>
+              <TextField sx={{ width: "300px" }} placeholder="Display Name" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+            </FormControl>
           </form>
         </Box>
+      </Container>
 
-        <Box sx={{ display: "flex", flexDirection: "column", margin: "50px 0", alignItems: "center", justifyContent: "center", }}>
-          <Typography variant="h3" style={{ color: palette.ACCENT }}>
+      <Container>
+        <Box sx={{ display: "flex", flexDirection: "column", mt: "40px" }}>
+          <Typography variant="h3">
             Preferences
           </Typography>
+          <Typography variant="overline">
+            Who's got you down bad?
+          </Typography>
+        </Box>
+      </Container>
+
+      <Container sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", mb: "200px", justifyContent: "center", alignItems: "center", width: "500px" }}>
           {canChangePreferences && <form onSubmit={handleAddPref} style={{ display: "flex", flexDirection: "column", margin: "50px" }}>
             <Autocomplete
               sx={{ width: "500px" }}
@@ -163,13 +189,22 @@ const Profile = () => {
               value={addingPreference}
               onChange={(_, val) => val && setAddingPreference(val)}
             />
-            <Button sx={{ width: "500px", mt: "10px" }} variant="contained" type="submit" disabled={newPrefDisabled}>
-              Add Preference
-            </Button>
           </form>}
           {userVar && preferences && preferences.map((preference: string) => (
             <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
+          <Box>
+            <Typography variant="h5" sx={{mt: "40px"}}>
+              Full send:
+            </Typography>
+            <FormControlLabel
+              control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
+              label="By checking this box, I am opting in for full send. This means that I will be displayed as a potential match to my preferences who have also opted in for full send. Likewise, I will be able to see people who have selected me as their preference and opted in for full send."
+            />
+          </Box>
+          <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: "500px", mt: "40px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>
+            Save Profile
+          </Button>
         </Box>
       </Container>
     </>

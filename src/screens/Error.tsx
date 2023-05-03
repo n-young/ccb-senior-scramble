@@ -10,10 +10,10 @@ const Error = () => {
       <Navbar/>
       <Container>
         <Box sx={{display: "flex", flexDirection: "column", mt: "40px"}}>
-          <Typography variant="h4" style={{color: palette.ACCENT}}>
+          <Typography variant="h3">
             Error!
           </Typography>
-          <Typography>
+          <Typography variant="body1">
             Uh oh, something went wrong! You're here either because you didn't sign up for the Scramble in time, or because of an internal error. If this isn't what you expected, please let us know!
           </Typography>
         </Box>

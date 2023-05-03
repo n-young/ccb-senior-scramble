@@ -24,18 +24,18 @@ const Matches = () => {
       <Navbar />
       <Container>
         <Box sx={{ display: "flex", flexDirection: "column", mt: "40px" }}>
-          <Typography variant="h3" style={{ color: palette.ACCENT }}>
+          <Typography variant="h3">
             Matches
           </Typography>
+          {done && <Typography variant="overline">
+            {matches.length ? "Okay, popular!" : "Oh no! You have no matches :("}
+          </Typography>}
         </Box>
       </Container>
       {done && <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: {md: "100px 200px", xs: "10px"}, gap: "25px"}}>
         {matches.map((match, idx) => (
             <Match key={idx} match={match} />
         ))}
-        {!matches.length && <Typography variant="body1">
-          Oh no! You have no matches 😔😔😔😔
-        </Typography>}
       </Box>}
     </>
   );
@@ -52,7 +52,7 @@ const Match = ({ match }: MatchProps) => {
   }, [match]);
 
   return realMatch ? (
-    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", borderRadius: "10px", p: "40px", boxShadow: "3px 3px 8px 2px rgba(0, 0, 0, 0.2)" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", borderRadius: "8px", p: "40px", boxShadow: "3px 3px 8px 2px rgba(0, 0, 0, 0.2)" }}>
       <img style={{ width: "150px", borderRadius: "1000px" }} src={realMatch.pic} referrerPolicy="no-referrer" />
       <Typography variant="h4" style={{padding: "10px 0"}}>
         {realMatch.display_name}

@@ -23,7 +23,7 @@ const LogoutButton = () => {
 
   return (
     <div>
-      <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "10000px"}} variant="contained" disabled={disabled} onClick={logout}>
+      <Button style={{backgroundColor: palette.ACCENT, textTransform: "capitalize", borderRadius: "8px", boxShadow: "none"}} variant="contained" disabled={disabled} onClick={logout}>
         Logout
       </Button>
     </div>

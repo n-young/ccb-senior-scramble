@@ -18,20 +18,22 @@ const Home = () => {
   return (
     <>
       <Box sx={{ display: "flex", height: "100%", flexDirection: { md: "row", xs: "column" }, alignItems: "stretch" }}>
-        <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", backgroundColor: palette.ACCENT, color: palette.WHITE }}>
-          <Typography variant="h2" fontWeight={600}>
-            Seni<span style={{ fontSize: "66.6%" }}>♥</span>r Scramble
-          </Typography>
-          <Typography variant="h4" sx={{ fontStyle: "italic" }}>
-            Full Send Edition {"------>"}
-          </Typography>
-          <Typography variant="body1">
-              Senior Scramble is CCB's asynchronous matchmaking event to give seniors a last chance to find friendship and/or love before they graduate.
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "center",  backgroundImage: `linear-gradient(to bottom right, ${palette.ACCENTBRIGHT}, ${palette.ACCENTDARK});`, color: palette.WHITE }}>
+          <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", background: "url(ccb-senior-scramble/confetti.png)", backgroundSize: "cover" }}>
+            <Typography variant="h2" fontWeight={600}>
+              Seni<span style={{ fontSize: "66.6%" }}>♥</span>r Scramble
+            </Typography>
+            <Typography variant="h4" sx={{ fontStyle: "italic" }}>
+              Full Send Edition {"------>"}
+            </Typography>
+            <Typography variant="body1">
+                Senior Scramble is CCB's asynchronous matchmaking event to give seniors a last chance to find friendship and/or love before they graduate.
+            </Typography>
+          </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
           <Navbar />
-          <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", alignItems: "center", gap: "40px" }}>
+          <Box sx={{ height: "100%", padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "40px" }}>
             <Typography variant="h4">
               Timeline
             </Typography>

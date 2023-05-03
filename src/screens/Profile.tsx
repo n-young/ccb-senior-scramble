@@ -42,7 +42,9 @@ const Profile = () => {
   const [newDisplayName, setNewDisplayName] = useState<string>("");
   const [newPronouns, setNewPronouns] = useState<string>("");
   const [newBio, setNewBio] = useState<string>("");
-  const [newHandle, setNewHandle] = useState<string>("");
+  const [newHandleInstagram, setNewHandleInstagram] = useState<string>("");
+  const [newHandleSnapchat, setNewHandleSnapchat] = useState<string>("");
+  const [newHandleFacebook, setNewHandleFacebook] = useState<string>("");
   const [newFullSending, setNewFullSending] = useState<boolean>(false);
 
   // New preference form
@@ -70,7 +72,9 @@ const Profile = () => {
       setNewDisplayName(user.display_name!);
       setNewPronouns(user.pronouns!);
       setNewBio(user.bio!);
-      setNewHandle(user.handle!)
+      setNewHandleInstagram(user.handleInstagram!)
+      setNewHandleSnapchat(user.handleSnapchat!)
+      setNewHandleFacebook(user.handleFacebook!)
       setNewFullSending(user.full_sending!)
     });
   }
@@ -79,12 +83,14 @@ const Profile = () => {
   const handleUpdateUser = (e: any) => {
     e.preventDefault();
     if (auth.currentUser && auth.currentUser.email) {
-      const newUser = {
+      const newUser: User = {
         email: auth.currentUser.email,
         display_name: newDisplayName,
         pronouns: newPronouns,
         bio: newBio,
-        handle: newHandle,
+        handleInstagram: newHandleInstagram,
+        handleSnapchat: newHandleSnapchat,
+        handleFacebook: newHandleFacebook,
         full_sending: newFullSending,
       }
       updateUser(newUser);
@@ -111,7 +117,7 @@ const Profile = () => {
   }
 
   // Helpers for what to render
-  const updateProfileDisabled = (userVar && newPronouns === userVar.pronouns && newBio === userVar.bio && newHandle === userVar.handle && newFullSending === userVar.full_sending)
+  const updateProfileDisabled = (userVar && newPronouns === userVar.pronouns && newBio === userVar.bio && newHandleInstagram === userVar.handleInstagram && newHandleSnapchat === userVar.handleSnapchat && newHandleFacebook === userVar.handleFacebook && newFullSending === userVar.full_sending)
   const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.includes(addingPreference.email!));
 
   return (
@@ -137,7 +143,7 @@ const Profile = () => {
             </Typography>
           </Box>
           <br/>
-          <form onSubmit={handleUpdateUser} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <form style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <FormControl>
               <FormLabel>Display Name:</FormLabel>
               <TextField sx={{ width: "500px" }} type="text" value={newDisplayName} disabled />
@@ -153,15 +159,15 @@ const Profile = () => {
             <FormLabel>Social Media:</FormLabel>
             <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
               <FormLabel>Instagram:</FormLabel>
-              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandleInstagram} onChange={(e) => setNewHandleInstagram(e.target.value)} />
             </FormControl>
             <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
               <FormLabel>Snapchat:</FormLabel>
-              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+              <TextField sx={{ width: "300px" }} placeholder="@" value={newHandleSnapchat} onChange={(e) => setNewHandleSnapchat(e.target.value)} />
             </FormControl>
             <FormControl sx={{flexDirection: "row", gap: "30px", alignItems: "center", justifyContent: "center"}}>
               <FormLabel>Facebook:</FormLabel>
-              <TextField sx={{ width: "300px" }} placeholder="Display Name" value={newHandle} onChange={(e) => setNewHandle(e.target.value)} />
+              <TextField sx={{ width: "300px" }} placeholder="Display Name" value={newHandleFacebook} onChange={(e) => setNewHandleFacebook(e.target.value)} />
             </FormControl>
           </form>
         </Box>
@@ -180,10 +186,10 @@ const Profile = () => {
 
       <Container sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
         <Box sx={{ display: "flex", flexDirection: "column", mb: "200px", justifyContent: "center", alignItems: "center", width: "500px" }}>
-          {canChangePreferences && <form onSubmit={handleAddPref} style={{ display: "flex", flexDirection: "column", margin: "50px" }}>
+          {canChangePreferences && <form onSubmit={handleAddPref} style={{ display: "flex", flexDirection: "column", margin: "10px" }}>
             <Autocomplete
               sx={{ width: "500px" }}
-              options={participants.filter(p => p.email !== userVar.email && !preferences.includes(p.email!))}
+              options={participants.filter(p => p.email !== userVar.email && preferences && !preferences.includes(p.email!))}
               getOptionLabel={option => option.display_name!}
               renderInput={(params) => <TextField {...params} label="Preference" />}
               value={addingPreference}
@@ -194,7 +200,7 @@ const Profile = () => {
             <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
           <Box>
-            <Typography variant="h5" sx={{mt: "40px"}}>
+            <Typography variant="h5" sx={{mt: "20px"}}>
               Full send:
             </Typography>
             <FormControlLabel
@@ -202,9 +208,11 @@ const Profile = () => {
               label="By checking this box, I am opting in for full send. This means that I will be displayed as a potential match to my preferences who have also opted in for full send. Likewise, I will be able to see people who have selected me as their preference and opted in for full send."
             />
           </Box>
-          <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: "500px", mt: "40px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>
-            Save Profile
-          </Button>
+          <form onSubmit={handleUpdateUser}>
+            <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: "500px", mt: "20px" }} variant="contained" type="submit" disabled={updateProfileDisabled}>
+              Save Profile
+            </Button>
+          </form>
         </Box>
       </Container>
     </>

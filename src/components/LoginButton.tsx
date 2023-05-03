@@ -27,7 +27,9 @@ const LoginButton = () => {
             display_name: participants.find(p => p.email == res.user.email)?.display_name || res.user.displayName || "",
             pronouns: "",
             bio: "",
-            handle: "",
+            handleInstagram: "",
+            handleSnapchat: "",
+            handleFacebook: "",
             pic: res.user.photoURL || "",
             preferences: [],
             full_sending: false,
@@ -35,6 +37,7 @@ const LoginButton = () => {
             matches: [],
           }
           setUser(user);
+          navigate("/intro");
         }
         navigate("/profile");
       })

@@ -1,6 +1,7 @@
 import { auth, getUser, getFlag } from "./firebase";
 import { Flag } from "./types";
 import Profile from "../screens/Profile"
+import Intro from "../screens/Intro"
 import Error from "../screens/Error"
 import Home from "../screens/Home"
 import Admin from "../screens/Admin"
@@ -22,6 +23,11 @@ export const routes: RouteType[] = [
     path: "/error",
     component: Error,
     guards: [],
+  },
+  {
+    path: "/intro",
+    component: Intro,
+    guards: [loginGuard, registeredGuard],
   },
   {
     path: "/profile",

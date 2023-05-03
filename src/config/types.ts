@@ -3,7 +3,9 @@ export type User = {
   display_name?: string;
   pronouns?: string;
   bio?: string;
-  handle?: string;
+  handleInstagram?: string;
+  handleSnapchat?: string;
+  handleFacebook?: string;
   pic?: string;
   preferences?: string[];
   full_sending?: boolean;

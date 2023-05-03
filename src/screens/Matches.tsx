@@ -9,15 +9,18 @@ import { User } from "../config/types";
 
 const Matches = () => {
   const [done, setDone] = useState<boolean>(false);
-  const [matches, setMatches] = useState<string[]>([])
+  const [mutualMatches, setMutualMatches] = useState<string[]>([])
+  const [otherMatches, setOtherMatches] = useState<string[]>([])
 
   useEffect(() => {
     if (auth.currentUser && auth.currentUser.email)
       getUser(auth.currentUser.email).then(user => {
-        setMatches(user.matches!)
+        setMutualMatches(user.matches!.filter(m => user.preferences?.includes(m)));
+        setOtherMatches(user.matches!.filter(m => !user.preferences?.includes(m)));
         setDone(true);
       });
   }, [])
+
 
   return (
     <>
@@ -28,23 +31,43 @@ const Matches = () => {
             Matches
           </Typography>
           {done && <Typography variant="overline">
-            {matches.length ? "Okay, popular!" : "Oh no! You have no matches :("}
+            {(mutualMatches.length || otherMatches.length) ? "Okay, popular!" : "Oh no! You have no matches :("}
           </Typography>}
         </Box>
+
+        {done && !!mutualMatches.length && 
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+          <Typography variant="h5">
+            Mutual Matches
+          </Typography>
+          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: "25px", gap: "25px"}}>
+            {mutualMatches.map((match, idx) => (
+                <Match other={false} key={idx} match={match} />
+            ))}
+          </Box>
+        </Box>}
+
+        {done && !!otherMatches.length && 
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+          <Typography variant="h5">
+            Other Matches
+          </Typography>
+          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: "25px", gap: "25px"}}>
+            {otherMatches.map((match, idx) => (
+                <Match other={true} key={idx} match={match} />
+            ))}
+          </Box>
+        </Box>}
       </Container>
-      {done && <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: {md: "100px 200px", xs: "10px"}, gap: "25px"}}>
-        {matches.map((match, idx) => (
-            <Match key={idx} match={match} />
-        ))}
-      </Box>}
     </>
   );
 };
 
 type MatchProps = {
   match: string;
+  other: boolean;
 }
-const Match = ({ match }: MatchProps) => {
+const Match = ({ match, other }: MatchProps) => {
   const [realMatch, setRealMatch] = useState<User>();
 
   useEffect(() => {
@@ -67,7 +90,13 @@ const Match = ({ match }: MatchProps) => {
         Email: {realMatch.email}
       </Typography>
       <Typography variant="body2">
-        Social: {realMatch.handle}
+        Instagram: {realMatch.handleInstagram}
+      </Typography>
+      <Typography variant="body2">
+        Snapchat: {realMatch.handleSnapchat}
+      </Typography>
+      <Typography variant="body2">
+        Facebook: {realMatch.handleFacebook}
       </Typography>
     </Box>) : <></>
 }

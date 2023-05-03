@@ -19,7 +19,7 @@ const Home = () => {
     <>
       <Box sx={{ display: "flex", height: "100%", flexDirection: { md: "row", xs: "column" }, alignItems: "stretch" }}>
         <Box sx={{ display: "flex", justifyContent: "center",  backgroundImage: `linear-gradient(to bottom right, ${palette.ACCENTBRIGHT}, ${palette.ACCENTDARK});`, color: palette.WHITE }}>
-          <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", background: "url(ccb-senior-scramble/confetti.png)", backgroundSize: "cover" }}>
+          <Box sx={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "20px", background: "url(confetti.png)", backgroundSize: "cover" }}>
             <Typography variant="h2" fontWeight={600}>
               Seni<span style={{ fontSize: "66.6%" }}>♥</span>r Scramble
             </Typography>

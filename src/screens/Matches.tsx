@@ -4,8 +4,10 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
 import { auth, getUser } from "../config/firebase";
-import palette from "../config/colors"
 import { User } from "../config/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faInstagramSquare, faSnapchatSquare, faFacebookSquare } from '@fortawesome/free-brands-svg-icons'
 
 const Matches = () => {
   const [done, setDone] = useState<boolean>(false);
@@ -40,21 +42,25 @@ const Matches = () => {
           <Typography variant="h5">
             Mutual Matches
           </Typography>
-          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: "25px", gap: "25px"}}>
+          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", maxWidth: "80vw", padding: "25px", gap: "25px"}}>
             {mutualMatches.map((match, idx) => (
+              <>
                 <Match other={false} key={idx} match={match} />
+              </>
             ))}
           </Box>
         </Box>}
 
         {done && !!otherMatches.length && 
-        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+        <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: "20px", mb: "100px"}}>
           <Typography variant="h5">
             Other Matches
           </Typography>
-          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", padding: "25px", gap: "25px"}}>
+          <Box sx={{display: "flex", flexDirection: {md: "row", xs: "column"}, overflow: "auto", maxWidth: "80vw", padding: "25px", gap: "25px"}}>
             {otherMatches.map((match, idx) => (
+              <>
                 <Match other={true} key={idx} match={match} />
+              </>
             ))}
           </Box>
         </Box>}
@@ -87,16 +93,16 @@ const Match = ({ match, other }: MatchProps) => {
         {realMatch.bio}
       </Typography>
       <Typography variant="body2">
-        Email: {realMatch.email}
+        <FontAwesomeIcon icon={faEnvelope} /> {realMatch.email}
       </Typography>
       <Typography variant="body2">
-        Instagram: {realMatch.handleInstagram}
+        {realMatch.handleInstagram && <><FontAwesomeIcon icon={faInstagramSquare} /> {realMatch.handleInstagram}</>}
       </Typography>
       <Typography variant="body2">
-        Snapchat: {realMatch.handleSnapchat}
+        {realMatch.handleSnapchat && <><FontAwesomeIcon icon={faSnapchatSquare} /> {realMatch.handleSnapchat}</>}
       </Typography>
       <Typography variant="body2">
-        Facebook: {realMatch.handleFacebook}
+        {realMatch.handleFacebook && <><FontAwesomeIcon icon={faFacebookSquare} /> {realMatch.handleFacebook}</>}
       </Typography>
     </Box>) : <></>
 }

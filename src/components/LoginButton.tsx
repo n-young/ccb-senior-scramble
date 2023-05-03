@@ -37,7 +37,7 @@ const LoginButton = () => {
             matches: [],
           }
           setUser(user);
-          navigate("/intro");
+          navigate("/profile");
         }
         navigate("/profile");
       })

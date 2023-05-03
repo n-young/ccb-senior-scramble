@@ -14,6 +14,7 @@ import { auth, addPreference, removePreference, getUser, updateUser, getFlag } f
 import { User, Flag } from "../config/types"
 import { participants } from "../config/participants";
 import palette from "../config/colors";
+import { platform } from "os";
 
 type PreferenceProps = {
   preference: string;
@@ -22,11 +23,11 @@ type PreferenceProps = {
 }
 const PreferenceRow = ({ preference, canChangePreferences, remove_func }: PreferenceProps) => {
   return (
-    <Box style={{ display: "flex", width: "400px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "5px 5px 5px 20px", borderRadius: "8px", backgroundColor: "rgba(1, 1, 1, 0.1)" }}>
+    <Box style={{ display: "flex", width: "400px", height: "50px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "5px 20px 5px 20px", borderRadius: "8px", backgroundColor: "rgb(1,1,1,0.05)"}}>
       <Typography>
         {participants.find(p => p.email == preference)?.display_name}
       </Typography>
-      {canChangePreferences && <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "8px", padding: "10px 20px", color: palette.WHITE, }} onClick={remove_func}>Remove</Button>}
+      {canChangePreferences && <Button style={{ backgroundColor: palette.ACCENT, borderRadius: "8px", padding: "4px", maxWidth: '5px !important', color: palette.WHITE, }} onClick={remove_func}>X</Button>}
     </Box>
   )
 }

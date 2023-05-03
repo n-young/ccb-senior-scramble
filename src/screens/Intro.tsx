@@ -4,20 +4,21 @@ import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+import palette from "../config/colors";
 
 
 const items = [
-  <p>hello1</p>,
-  <p>hello2</p>,
-  <p>hello3</p>,
-  <p>hello4</p>,
-  <p>hello5</p>,
+  <Box sx={{ margin: "auto", width: "500px", height: "300px", backgroundColor: palette.WHITE, padding: "10px" }}>
+    <Typography variant="h3">Hello!</Typography>
+  </Box>
 ];
 
 
 const Intro = () => {
   return (
-    <AliceCarousel mouseTracking items={items} />
+    <Box sx={{ height: "100vh", width: "100vw", backgroundColor: "rgba(1, 1, 1, 0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <AliceCarousel mouseTracking items={items} />
+    </Box>
   );
 };
 

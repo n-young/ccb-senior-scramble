@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
 import palette from "../config/colors";
@@ -11,7 +10,7 @@ const boxStyle = {
   placeSelf: "stretch",
   display: "flex",
   flexDirection: "column",
-  alignItems: "flex-start"
+  alignItems: { md: "flex-start", xs: "center" }
 }
 
 const Home = () => {
@@ -32,12 +31,14 @@ const Home = () => {
           </Box>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-          <Navbar />
+          <Box sx={{ display: "flex", justifyContent: {xs: "center", md: "flex-end"}, mt: { xs: "30px", md: "0px" } }}>
+            <Navbar />
+          </Box>
           <Box sx={{ height: "100%", padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "40px" }}>
             <Typography variant="h4">
               Timeline
             </Typography>
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 3fr", gridTemplateRows: "repeat(3, 1fr)", gap: "20px", placeItems: "center" }}>
+            <Box sx={{ display: { md: "grid", xs: "flex" }, flexDirection: "column", gridTemplateColumns: "1fr 3fr", gridTemplateRows: "repeat(3, 1fr)", gap: "20px", placeItems: "center" }}>
               <RegisterSVG />
               <Box sx={boxStyle}>
                 <Typography variant="h5">Register</Typography>

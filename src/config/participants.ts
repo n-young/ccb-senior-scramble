@@ -20,5 +20,13 @@ export const participants: User[] = [
   {
     email: "livia_zhu@brown.edu",
     display_name: "Livia Zhu"
+  },
+  {
+    email: "sally_zhang@brown.edu",
+    display_name: "Sally Zhang"
+  },
+  {
+    email: "bea_campilan@brown.edu",
+    display_name: "Bea Campilan"
   }
 ]

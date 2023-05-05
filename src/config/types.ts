@@ -1,6 +1,7 @@
 export type User = {
   email?: string;
   display_name?: string;
+  google_name?: string;
   pronouns?: string;
   bio?: string;
   handleInstagram?: string;

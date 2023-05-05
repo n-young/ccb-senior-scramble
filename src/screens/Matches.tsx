@@ -37,6 +37,11 @@ const Matches = () => {
           </Typography>}
         </Box>
 
+        {done && !(mutualMatches.length || otherMatches.length) && <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+          <img style={{borderRadius: "100px", margin: "50px"}} src="https://cdn.dribbble.com/users/2422127/screenshots/6609950/ezgif.com-resize__5_.gif"></img>
+          <Typography variant="h5">Oh no! But hope is not lost - head to the senior formal on May 21st for another chance to find love!</Typography>
+        </Box>}
+
         {done && !!mutualMatches.length && 
         <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
           <Typography variant="h5">

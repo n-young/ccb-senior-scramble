@@ -2,7 +2,7 @@
   "name": "ccb-senior-scramble",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://n-young.github.io/ccb-senior-scramble",
+  "homepage": "https://ccb-scramble.com",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",

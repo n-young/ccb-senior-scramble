@@ -25,6 +25,7 @@ const LoginButton = () => {
           const user: User = {
             email: res.user.email!,
             display_name: participants.find(p => p.email == res.user.email)?.display_name || res.user.displayName || "",
+            google_name: res.user.displayName || "",
             pronouns: "",
             bio: "",
             handleInstagram: "",

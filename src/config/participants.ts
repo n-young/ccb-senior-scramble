@@ -2336,5 +2336,17 @@ export const participants: User[] = [
   {
     "email": "ding_ding_wei@brown.edu",
     "display_name": "Ding Wei"
+  },
+  {
+    "email": "gordon_sherman@brown.edu",
+    "display_name": "Gordon Sherman"
+  },
+  {
+    "email": "shreya_kamojjala@brown.edu",
+    "display_name": "Shreya Kamojjala"
+  },
+  {
+    "email": "john_maragakis@brown.edu",
+    "display_name": "John Maragakis"
   }
 ]

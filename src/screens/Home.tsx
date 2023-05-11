@@ -26,10 +26,11 @@ const Home = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: {xs:"60vw"},
     bgcolor: 'background.paper',
-    borderRadius: "40px",
     p: 5,
+    maxHeight: "80vh", 
+    overflow: "scroll"
   };
 
   return (

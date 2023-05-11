@@ -69,10 +69,11 @@ const Profile = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: {xs:"60vw"},
     bgcolor: 'background.paper',
-    borderRadius: "40px",
     p: 5,
+    maxHeight: "80vh", 
+    overflow: "scroll"
   };
 
   // Refresh the user if we are logged in
@@ -209,7 +210,7 @@ const Profile = () => {
             Scramble preferences close on May 19th at 11:59PM. Late submissions will NOT be accepted. Check your matches page on May 20th at 12PM to see who you matched with!
           </Typography>
           <Typography variant="body1">
-            <a href="https://tinyurl.com/ScrambleList">Full Send Scramble Participants List</a>
+            <a href="https://tinyurl.com/ScrambleList" target="_blank">Full Send Scramble Participants List</a>
           </Typography>
         </Box>
       </Container>
@@ -252,6 +253,7 @@ const Profile = () => {
       <Modal
         open={open}
         onClose={handleClose}
+
       >
         <Box sx={style}>
           <Typography variant="h5">
@@ -266,7 +268,7 @@ const Profile = () => {
           <Typography variant="body1" sx={{ mt: 2 }}>
             Here is an example of how the full-send option works:
           </Typography>
-          <img src="fullsend.png"/>
+          <img style={{width: "100%"}} src="fullsend.png"/>
           <ul>
             <li>A puts down B, A and B opt-in for full send → B sees A as a match</li>
             <li>A puts down B, A opts in for full send and B opt-out of full send → A and B do not see each other as a match</li>

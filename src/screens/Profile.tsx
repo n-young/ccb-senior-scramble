@@ -266,7 +266,7 @@ const Profile = () => {
           <Typography variant="body1" sx={{ mt: 2 }}>
             Here is an example of how the full-send option works:
           </Typography>
-          <img src="url(fullsend.png)"/>
+          <img src="fullsend.png"/>
           <ul>
             <li>A puts down B, A and B opt-in for full send → B sees A as a match</li>
             <li>A puts down B, A opts in for full send and B opt-out of full send → A and B do not see each other as a match</li>

@@ -15,7 +15,7 @@ import { auth, addPreference, removePreference, getUser, updateUser, getFlag } f
 import { User, Flag } from "../config/types"
 import { participants } from "../config/participants";
 import palette from "../config/colors";
-import { platform } from "os";
+import Modal from '@mui/material/Modal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
@@ -58,6 +58,22 @@ const Profile = () => {
 
   // New preference form
   const [addingPreference, setAddingPreference] = useState<User>({ display_name: "" });
+
+  // Info modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    borderRadius: "40px",
+    p: 5,
+  };
 
   // Refresh the user if we are logged in
   useEffect(() => {
@@ -182,12 +198,18 @@ const Profile = () => {
       </Container>
     
       <Container>
-        <Box sx={{ display: "flex", flexDirection: "column", mt: "40px" }}>
+        <Box sx={{ display: "flex", flexDirection: "column", mt: "40px", gap: "5px"}}>
           <Typography variant="h3">
             Preferences
           </Typography>
           <Typography variant="overline">
             Who's got you down bad?
+          </Typography>
+          <Typography variant="body1">
+            Scramble preferences close on May 19th at 11:59PM. Late submissions will NOT be accepted. Check your matches page on May 20th at 12PM to see who you matched with!
+          </Typography>
+          <Typography variant="body1">
+            <a href="tinyurl.com/ScrambleList">Full Send Scramble Participants List</a>
           </Typography>
         </Box>
       </Container>
@@ -208,14 +230,17 @@ const Profile = () => {
             <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
           <Box>
-            <Typography variant="h5" sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}}>
+            {/* <Typography variant="h5" sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}}>
               Full send:
-            </Typography>
+            </Typography> */}
             <FormControlLabel
               sx={{ width: { md: "500px", xs: "300px" } }}
               control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
-              label="By checking this box, I am opting in for full send. This means that I will be displayed as a potential match to my preferences who have also opted in for full send. Likewise, I will be able to see people who have selected me as their preference and opted in for full send."
+              label="Full sending?"
             />
+            <Typography>
+              <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>What is full sending?</a>
+            </Typography>
           </Box>
           <form onSubmit={handleUpdateUser}>
             <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}} variant="contained" type="submit" disabled={updateProfileDisabled}>
@@ -224,6 +249,38 @@ const Profile = () => {
           </form>
         </Box>
       </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+      >
+        <Box sx={style}>
+          <Typography variant="h5">
+            What is full sending?
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            In this special edition of Scramble, get ready to "full send" it! You can opt in for the “full send” option after picking your matches, which means that you will be able to see the names of people who put your name down, regardless of whether you match with them or not. The catch? The participants you put down will also see that you put their name down. It's a chance to show your interest without holding back.
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            For those who aren't ready to declare their undying admiration through our state-of-the-art algorithm, no worries! If you don't opt-in to "full send," your scramble submissions will be hidden from anyone you don't match with. After all, a wise person once told me, "some things are better left unsaid..." 
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Here is an example of how the full-send option works:
+          </Typography>
+          <img src="url(fullsend.png)"/>
+          <ul>
+            <li>A puts down B, A and B opt-in for full send → B sees A as a match</li>
+            <li>A puts down B, A opts in for full send and B opt-out of full send → A and B do not see each other as a match</li>
+            <li>A puts down B, A and B opt-out of full send → A and B do not see each other as a match</li>
+            <li>A puts down B, and B puts down A, A and B opt-out of full send → A and B see each other as match</li>
+          </ul>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Obviously your Senior Board wants you to participate on your own terms and enjoy the Scramble without any pressure, but if there is any time to have a chaos arc, now would be the optimal time. Desperate times call for desperate measures, amirite?
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            So seniors, get matching! It's never too late to earn an A in love (or friendship), even if you’re already graduating magna cum lonely xoxo
+          </Typography>
+        </Box>
+      </Modal>
     </>
   );
 };

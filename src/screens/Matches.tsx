@@ -39,7 +39,18 @@ const Matches = () => {
 
         {done && !(mutualMatches.length || otherMatches.length) && <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
           <img style={{borderRadius: "100px", margin: "50px"}} src="https://cdn.dribbble.com/users/2422127/screenshots/6609950/ezgif.com-resize__5_.gif"></img>
-          <Typography variant="h5">Oh no! But hope is not lost - head to the senior formal on May 21st for another chance to find love!</Typography>
+          <Typography variant="body1">
+            Aw, no matches? Don't take it too personally. Either your secret admirers haven't been brave enough to full-send it, or perhaps the universe's mysterious forces are at play, and craft the perfect meet-cute situation for you. Who knows, maybe you'll find your bette half at Senior Formal on May 21st from 9pm-1am at the BankNewport City Center? There's only one way to find out. We'll see you there!
+          </Typography>
+        </Box>}
+
+        {done && (mutualMatches.length || otherMatches.length) && <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+          <Typography variant="body1">
+            Congratulations! You're a winner, and you've just been matched with someone who's witty, charming, and devastatingly attractive. We encourage you to reach out to each other on social media to begin your new friendship or potential romance.
+          </Typography>
+          <Typography variant="body1">
+            But wait, isn't Senior Formal tomorrow 5/21 from 9pm-1am at the BankNewport City Center? It seems like the perfect opportunity to take your platonic or romantic date and dance the night away. Don't forget to immortalise the start of your beautiful connection at our photo booth!
+          </Typography>
         </Box>}
 
         {done && !!mutualMatches.length && 

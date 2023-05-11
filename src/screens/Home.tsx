@@ -1,5 +1,8 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Modal from '@mui/material/Modal';
+
 import Navbar from "../components/Navbar";
 import palette from "../config/colors";
 import RegisterSVG from "../components/RegisterSVG";
@@ -14,6 +17,21 @@ const boxStyle = {
 }
 
 const Home = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 500,
+    bgcolor: 'background.paper',
+    borderRadius: "40px",
+    p: 5,
+  };
+
   return (
     <>
       <Box sx={{ display: "flex", height: "100%", flexDirection: { md: "row", xs: "column" }, alignItems: "stretch" }}>
@@ -26,7 +44,10 @@ const Home = () => {
               Full Send Edition {"------>"}
             </Typography>
             <Typography variant="body1">
-                Senior Scramble is CCB's asynchronous matchmaking event to give seniors a last chance to find friendship and/or love before they graduate.
+              It's the final scramble. With a catch. This is CCB Senior Scramble: Full Send Edition. 
+            </Typography>
+            <Typography variant="body1">
+                <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>Read more!</a>
             </Typography>
           </Box>
         </Box>
@@ -64,6 +85,25 @@ const Home = () => {
           </Box>
         </Box>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+      >
+        <Box sx={style}>
+          <Typography variant="h5">
+            What is the CCB Senior Scramble?
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Senior Scramble is CCB's asynchronous matchmaking event to give seniors a last chance to find friendship and/or love before they graduate. Seniors who sign up for Scramble will have their names on the list of eligible participants. Participants can then log into our website and submit up to 10 names of people who they would want to match with. Participants who put each other's name down will be considered as a “match” and will be informed of their matches by logging onto the website on May 20th. 
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            In this special edition of Scramble, get ready to "full send" it! You can opt in for the “full send” option after picking your matches, which means that you will be able to see the names of people who put your name down, regardless of whether you match with them or not. The catch? The participants you put down will also see that you put their name down. It's a chance to show your interest without holding back. 
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Please contact classboard@brown.edu for any questions or concerns
+          </Typography>
+        </Box>
+      </Modal>
     </>
   );
 };

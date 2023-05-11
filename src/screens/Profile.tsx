@@ -29,7 +29,7 @@ const PreferenceRow = ({ preference, canChangePreferences, remove_func }: Prefer
   return (
     <Box sx={{ display: "flex", width: { md: "400px", xs: "250px" }, height: "45px", flexDirection: "row", alignItems: "center", justifyContent: "space-between", margin: "5px 0", padding: "10px 10px 10px 20px", borderRadius: "8px", backgroundColor: "rgba(1, 1, 1, 0.05)", m:1.5}}>
       <Typography>
-        {participants.find(p => p.email == preference)?.display_name}
+        {participants.find(p => p.email === preference)?.display_name}
       </Typography>
       {canChangePreferences &&
         <a id='clickable' onClick={remove_func}>
@@ -127,7 +127,7 @@ const Profile = () => {
   // Add a preference to the database
   const handleAddPref = (e: any) => {
     e.preventDefault();
-    if (auth.currentUser?.email && addingPreference) {
+    if (auth.currentUser?.email && addingPreference && preferences.length < 10) {
       const preference = addingPreference.email;
       addPreference(auth.currentUser?.email, preference!)
         .catch(e => console.log(e));
@@ -144,7 +144,6 @@ const Profile = () => {
 
   // Helpers for what to render
   const updateProfileDisabled = (userVar && newPronouns === userVar.pronouns && newBio === userVar.bio && newHandleInstagram === userVar.handleInstagram && newHandleSnapchat === userVar.handleSnapchat && newHandleFacebook === userVar.handleFacebook && newFullSending === userVar.full_sending)
-  const newPrefDisabled = (addingPreference.display_name === "" || preferences.length >= 10 || preferences.includes(addingPreference.email!));
 
   return (
     <>
@@ -162,14 +161,14 @@ const Profile = () => {
 
       <Container sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: { md: "500px", xs: "300px" } }}>
-          {userVar && <img style={{ width: "200px", borderRadius: "1000px", margin: "20px" }} src={userVar.pic} referrerPolicy="no-referrer" />}
+          {userVar && <img alt="pic" style={{ width: "200px", borderRadius: "1000px", margin: "20px" }} src={userVar.pic} referrerPolicy="no-referrer" />}
           <Box sx={{width: "350px", textAlign: "center"}}>
             <Typography variant="overline">
               Change your profile picture by changing your Google Account picture
             </Typography>
           </Box>
           <br/>
-          <form style={{ display: "flex", alignItems: "center", flexDirection: "column", gap: "10px" }}>
+          <form style={{ display: "flex", alignItems: "center", flexDirection: "column", gap: "10px" }} onSubmit={handleUpdateUser}>
             <FormControl>
               <FormLabel>Display Name:</FormLabel>
               <TextField sx={{ width: { md: "500px", xs: "300px" } }} type="text" value={newDisplayName} disabled />
@@ -194,6 +193,17 @@ const Profile = () => {
               <FormLabel>Facebook:</FormLabel>
               <TextField sx={{ width: "300px" }} placeholder="Display Name" value={newHandleFacebook} onChange={(e) => setNewHandleFacebook(e.target.value)} />
             </FormControl>
+            <FormControlLabel
+              sx={{ width: { md: "500px", xs: "300px" } }}
+              control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
+              label="Full sending?"
+            />
+            <Typography>
+              <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>What is full sending?</a>
+            </Typography>
+            <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}} variant="contained" type="submit" disabled={updateProfileDisabled}>
+              Save Profile
+            </Button>
           </form>
         </Box>
       </Container>
@@ -230,24 +240,16 @@ const Profile = () => {
           {userVar && preferences && preferences.map((preference: string) => (
             <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
-          <Box>
-            {/* <Typography variant="h5" sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}}>
-              Full send:
-            </Typography> */}
+          <Box sx={{textAlign: "start"}}>
             <FormControlLabel
               sx={{ width: { md: "500px", xs: "300px" } }}
               control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
               label="Full sending?"
             />
             <Typography>
-              <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>What is full sending?</a>
+              <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>{"(What is full sending?)"}</a>
             </Typography>
           </Box>
-          <form onSubmit={handleUpdateUser}>
-            <Button style={{ backgroundColor: palette.ACCENT, textTransform: "capitalize" }} sx={{ width: { md: "500px", xs: "300px" }, mt: "20px"}} variant="contained" type="submit" disabled={updateProfileDisabled}>
-              Save Profile
-            </Button>
-          </form>
         </Box>
       </Container>
       <Modal
@@ -268,7 +270,7 @@ const Profile = () => {
           <Typography variant="body1" sx={{ mt: 2 }}>
             Here is an example of how the full-send option works:
           </Typography>
-          <img style={{width: "100%"}} src="fullsend.png"/>
+          <img style={{width: "100%"}} alt="fullsend" src="fullsend.png"/>
           <ul>
             <li>A puts down B, A and B opt-in for full send → B sees A as a match</li>
             <li>A puts down B, A opts in for full send and B opt-out of full send → A and B do not see each other as a match</li>

@@ -24,7 +24,7 @@ const LoginButton = () => {
         } else if (res.user.metadata.creationTime === res.user.metadata.lastSignInTime) {
           const user: User = {
             email: res.user.email!,
-            display_name: participants.find(p => p.email == res.user.email)?.display_name || res.user.displayName || "",
+            display_name: participants.find(p => p.email === res.user.email)?.display_name || res.user.displayName || "",
             google_name: res.user.displayName || "",
             pronouns: "",
             bio: "",

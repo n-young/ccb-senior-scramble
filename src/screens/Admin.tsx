@@ -3,14 +3,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
-import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
 import Typography from "@mui/material/Typography";
 import Navbar from "../components/Navbar";
 import { makeMatches, getFlag, setFlag } from "../config/firebase";
 import { Flag } from "../config/types";
-import palette from "../config/colors";
 
 const Admin = () => {
   const [canSignup, setCanSignup] = useState<boolean>(false);

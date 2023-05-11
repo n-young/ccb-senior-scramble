@@ -38,7 +38,7 @@ const Matches = () => {
         </Box>
 
         {done && !(mutualMatches.length || otherMatches.length) && <Box sx={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
-          <img style={{borderRadius: "100px", margin: "50px"}} src="https://cdn.dribbble.com/users/2422127/screenshots/6609950/ezgif.com-resize__5_.gif"></img>
+          <img style={{borderRadius: "100px", margin: "50px"}} alt="egg" src="https://cdn.dribbble.com/users/2422127/screenshots/6609950/ezgif.com-resize__5_.gif"/>
           <Typography variant="body1">
             Aw, no matches? Don't take it too personally. Either your secret admirers haven't been brave enough to full-send it, or perhaps the universe's mysterious forces are at play, and craft the perfect meet-cute situation for you. Who knows, maybe you'll find your bette half at Senior Formal on May 21st from 9pm-1am at the BankNewport City Center? There's only one way to find out. We'll see you there!
           </Typography>
@@ -98,7 +98,7 @@ const Match = ({ match, other }: MatchProps) => {
 
   return realMatch ? (
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", borderRadius: "8px", p: "40px", boxShadow: "3px 3px 8px 2px rgba(0, 0, 0, 0.2)" }}>
-      <img style={{ width: "150px", borderRadius: "1000px" }} src={realMatch.pic} referrerPolicy="no-referrer" />
+      <img style={{ width: "150px", borderRadius: "1000px" }} alt="pic" src={realMatch.pic} referrerPolicy="no-referrer" />
       <Typography variant="h4" style={{padding: "10px 0"}}>
         {realMatch.display_name}
       </Typography>

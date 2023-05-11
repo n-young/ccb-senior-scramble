@@ -1,6 +1,4 @@
-import { User } from "./types"
-
-export const participants: User[] = [
+[
   {
     "email": "Aaron Castillo",
     "display_name": "aaron_castillo@brown.edu"

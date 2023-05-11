@@ -196,7 +196,7 @@ const Profile = () => {
             <FormControlLabel
               sx={{ width: { md: "500px", xs: "300px" } }}
               control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
-              label="Full sending?"
+              label="Full sending? (not visible to other participants)"
             />
             <Typography>
               <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>What is full sending?</a>

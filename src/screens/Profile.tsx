@@ -209,7 +209,7 @@ const Profile = () => {
             Scramble preferences close on May 19th at 11:59PM. Late submissions will NOT be accepted. Check your matches page on May 20th at 12PM to see who you matched with!
           </Typography>
           <Typography variant="body1">
-            <a href="tinyurl.com/ScrambleList">Full Send Scramble Participants List</a>
+            <a href="https://tinyurl.com/ScrambleList">Full Send Scramble Participants List</a>
           </Typography>
         </Box>
       </Container>

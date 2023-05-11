@@ -240,16 +240,6 @@ const Profile = () => {
           {userVar && preferences && preferences.map((preference: string) => (
             <PreferenceRow key={preference} preference={preference} canChangePreferences={canChangePreferences} remove_func={() => handleRemovePref(preference)} />
           ))}
-          <Box sx={{textAlign: "start"}}>
-            <FormControlLabel
-              sx={{ width: { md: "500px", xs: "300px" } }}
-              control={<Checkbox checked={newFullSending} disabled={!canChangePreferences} onChange={() => setNewFullSending((prev) => !prev)} />}
-              label="Full sending?"
-            />
-            <Typography>
-              <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={handleOpen}>{"(What is full sending?)"}</a>
-            </Typography>
-          </Box>
         </Box>
       </Container>
       <Modal

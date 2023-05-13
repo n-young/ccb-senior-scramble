@@ -1827,7 +1827,7 @@ export const participants: User[] = [
   },
   {
     "email": "tieran_mcclure@brown.edu",
-    "display_name": "r"
+    "display_name": "Tieran McClure"
   },
   {
     "email": "rachel_huynh@brown.edu",

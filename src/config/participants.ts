@@ -2338,10 +2338,6 @@ export const participants: User[] = [
     "display_name": "Ding Wei"
   },
   {
-    "email": "gordon_sherman@brown.edu",
-    "display_name": "Gordon Sherman"
-  },
-  {
     "email": "shreya_kamojjala@brown.edu",
     "display_name": "Shreya Kamojjala"
   },

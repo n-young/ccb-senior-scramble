@@ -77,7 +77,7 @@ export async function makeMatches() {
       full_senders.push(data.email)
   });
   const res = makeMatchesAlgorithm(full_senders, preferences);
-
+  
   const rkeys = Object.keys(res);
   for (const r of rkeys) {
     const new_user = {
@@ -95,6 +95,7 @@ function makeMatchesAlgorithm(full_senders: string[], preferences: { [key: strin
   // Add users that match mutually
   for (const user of users) {
     results[user] = preferences[user].filter((pref: string) => {
+      if (!preferences[pref]) return false;
       const matchingPref = preferences[pref].filter(p => p === user)
       return matchingPref.length > 0;
     });
